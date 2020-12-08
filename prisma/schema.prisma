@@ -18,7 +18,7 @@ model User_Role {
 
 model User {
   id        Int         @id @default(autoincrement())
-  firstname String
+  name      String
   User_Role User_Role[]
 }
 

@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client'
 async function main () {
   const prisma = new PrismaClient()
 
+  //await seed(prisma)
+
   const existing = await prisma.user_Role.findMany()
   console.log(existing)
 
@@ -13,7 +15,7 @@ async function main () {
       User_Role: {
         set: [{
           roleId_userId: {
-            roleId: 1,
+            roleId: 2,
             userId: 1
           }
         }]
@@ -23,6 +25,33 @@ async function main () {
 
   console.log(test)
   await prisma.$disconnect()
+}
+
+async function seed (prisma: PrismaClient): Promise<void> {
+  await prisma.user.create({
+    data: {
+      name: 'user1'
+    }
+  })
+
+  await prisma.role.create({
+    data: {
+      name: 'role1'
+    }
+  })
+
+  await prisma.role.create({
+    data: {
+      name: 'role2'
+    }
+  })
+
+  await prisma.user_Role.create({
+    data: {
+      user: { connect: { id: 1 } },
+      role: { connect: { id: 1 } }
+    }
+  })
 }
 
 main()
